@@ -1,0 +1,33 @@
+version: "3.7"
+
+services:
+    jmeter:
+           container_name: jmeter-1 
+           image: egaillardon/jmeter-plugins
+           ports:
+                 - "1097:1097"
+                 - "1098:1098"
+                 - "1099:1099"
+    grafana:
+           container_name: grafana-1
+           image: grafana/grafana
+           ports:
+                 - "3000:3000"
+           env_file:
+                 - 'env.grafana'
+           links:
+                 - influxdb
+           volumes:
+                 - grafana_data:/var/lib/grafana
+    influxdb:
+           container_name: influxdb-1
+           image: influxdb
+           env_file:
+                 - 'env.influxdb'
+           ports: 
+                 - "8086:8086"
+           volumes:
+                 - influxdb_data:/var/lib/influxdb
+volumes:
+      grafana_data:
+      influxdb_data:
